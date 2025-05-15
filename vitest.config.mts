@@ -4,7 +4,6 @@ export default defineConfig({
   test: {
     watch: false,
     environment: "jsdom",
-    include: ["**/*.test.(ts|tsx)"],
     globals: true,
   },
 });
