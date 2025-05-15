@@ -5,5 +5,9 @@ export default defineConfig({
     watch: false,
     environment: "jsdom",
     globals: true,
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}", "!src/index.ts"],
+    },
   },
 });
