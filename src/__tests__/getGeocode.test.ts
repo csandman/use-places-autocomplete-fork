@@ -5,7 +5,7 @@ const data = [{ place_id: "0109" }];
 const error = "ERROR";
 const geocode = vi.fn();
 const setupMaps = (type = "success") => {
-  global.google = {
+  globalThis.google = {
     maps: {
       // @ts-ignore
       Geocoder: class {

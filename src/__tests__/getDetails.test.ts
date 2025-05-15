@@ -7,7 +7,7 @@ const request = { placeId: "0109", fields: ["name", "rating"] };
 const getDetailsFn = vi.fn();
 
 const setupMaps = (type = "success") => {
-  global.google = {
+  globalThis.google = {
     maps: {
       places: {
         // @ts-ignore

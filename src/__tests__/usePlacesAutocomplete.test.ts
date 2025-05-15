@@ -54,7 +54,7 @@ const getMaps = (type = "success", d = data): any => ({
 describe("usePlacesAutocomplete", () => {
   beforeEach(() => {
     vi.clearAllTimers();
-    global.google = getMaps();
+    globalThis.google = getMaps();
     getPlacePredictions.mockClear();
     // @ts-expect-error
     _debounce.mockClear();
@@ -65,12 +65,12 @@ describe("usePlacesAutocomplete", () => {
     expect((window as any)[callbackName]).toBeUndefined();
 
     // @ts-ignore
-    delete global.google.maps;
+    delete globalThis.google.maps;
     renderHelper({ callbackName, googleMaps: getMaps().maps });
     expect((window as any)[callbackName]).toBeUndefined();
 
     // @ts-ignore
-    delete global.google;
+    delete globalThis.google;
     renderHelper({ callbackName, googleMaps: getMaps().maps });
     expect((window as any)[callbackName]).toBeUndefined();
 
@@ -87,18 +87,18 @@ describe("usePlacesAutocomplete", () => {
     console.error = vi.fn();
 
     // @ts-ignore
-    delete global.google.maps.places;
+    delete globalThis.google.maps.places;
     renderHelper();
     expect(console.error).toHaveBeenCalledTimes(1);
     expect(console.error).toHaveBeenCalledWith(loadApiErr);
 
     // @ts-ignore
-    delete global.google.maps;
+    delete globalThis.google.maps;
     renderHelper();
     expect(console.error).toHaveBeenCalledTimes(2);
 
     // @ts-ignore
-    delete global.google;
+    delete globalThis.google;
     renderHelper();
     expect(console.error).toHaveBeenCalledTimes(3);
 
@@ -118,7 +118,7 @@ describe("usePlacesAutocomplete", () => {
   });
 
   it('should set "requestOptions" correctly', () => {
-    global.google = getMaps("opts");
+    globalThis.google = getMaps("opts");
     const opts = { radius: 100 };
     const result = renderHelper({ requestOptions: opts });
     act(() => result.current.setValue("test"));
@@ -132,14 +132,14 @@ describe("usePlacesAutocomplete", () => {
     console.error = () => null;
 
     // @ts-ignore
-    delete global.google;
+    delete globalThis.google;
     let res = renderHelper({ googleMaps: getMaps().maps });
     expect(res.current.ready).toBeTruthy();
 
     res = renderHelper();
     expect(res.current.ready).toBeFalsy();
 
-    global.google = getMaps();
+    globalThis.google = getMaps();
     res = renderHelper();
     expect(res.current.ready).toBeTruthy();
   });
@@ -181,7 +181,7 @@ describe("usePlacesAutocomplete", () => {
     });
     expect(res.current.suggestions).toEqual(okSuggestions);
 
-    global.google = getMaps("failure");
+    globalThis.google = getMaps("failure");
     res = renderHelper();
     act(() => {
       res.current.setValue("test");
@@ -204,7 +204,7 @@ describe("usePlacesAutocomplete", () => {
 
     vi.setSystemTime(0);
     const cachedData = [{ place_id: "1119" }];
-    global.google = getMaps("success", cachedData);
+    globalThis.google = getMaps("success", cachedData);
     res = renderHelper({ cache: 10 });
     act(() => {
       res.current.setValue("prev");
@@ -215,7 +215,7 @@ describe("usePlacesAutocomplete", () => {
       data: cachedData,
     });
 
-    global.google = getMaps();
+    globalThis.google = getMaps();
     res = renderHelper({ cache: 10 });
     act(() => {
       res.current.setValue("prev");
@@ -244,14 +244,14 @@ describe("usePlacesAutocomplete", () => {
     vi.setSystemTime(0);
     // Queue up some cached data
     const cachedData = [{ place_id: "1119" }];
-    global.google = getMaps("success", cachedData);
+    globalThis.google = getMaps("success", cachedData);
     const res1 = renderHelper({ cache: 10, cacheKey: CACHE_KEY_1 });
     act(() => {
       res1.current.setValue("foo");
       vi.runAllTimers();
     });
     // Ensure we're actually getting cached data by resetting getMaps mock
-    global.google = getMaps();
+    globalThis.google = getMaps();
     act(() => {
       res1.current.setValue("foo");
       vi.runAllTimers();
@@ -283,7 +283,7 @@ describe("usePlacesAutocomplete", () => {
 
   it("should clear cache", () => {
     const cachedData = [{ place_id: "1119" }];
-    global.google = getMaps("success", cachedData);
+    globalThis.google = getMaps("success", cachedData);
     let res = renderHelper({ cache: 10 });
     act(() => {
       res.current.setValue("prev");
@@ -294,7 +294,7 @@ describe("usePlacesAutocomplete", () => {
       data: cachedData,
     });
 
-    global.google = getMaps();
+    globalThis.google = getMaps();
     res = renderHelper({ cache: 10 });
     res.current.clearCache("other_key");
     act(() => {
@@ -306,7 +306,7 @@ describe("usePlacesAutocomplete", () => {
       data: cachedData,
     });
 
-    global.google = getMaps();
+    globalThis.google = getMaps();
     res = renderHelper({ cache: 10 });
     res.current.clearCache();
     act(() => {
@@ -332,7 +332,7 @@ describe("usePlacesAutocomplete", () => {
     console.error = vi.fn();
 
     // @ts-ignore
-    delete global.google;
+    delete globalThis.google;
     const result = renderHelper();
     act(() => result.current.setValue("test"));
     expect(result.current.suggestions).toEqual(defaultSuggestions);
