@@ -100,8 +100,5 @@
   },
   "peerDependencies": {
     "react": ">=16.8.0"
-  },
-  "resolutions": {
-    "@testing-library/dom": "^10.4.0"
   }
 }
